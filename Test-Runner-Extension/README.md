@@ -1,4 +1,4 @@
-# test-runner-extension-0 README
+# Test-Runner-Extension README
 
 This is the README for your extension "test-runner-extension-0". After writing up a brief description, we recommend including the following sections.
 
