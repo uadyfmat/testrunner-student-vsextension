@@ -34,7 +34,7 @@
         {
           "id": "test-runner",
           "title": "Test-Runner",
-          "icon": "resourses/icon.svg"
+          "icon": "resources/icon.svg"
         }
       ]
     },
@@ -43,9 +43,20 @@
         {
           "id": "package-install-test-runner",
           "name": "Install Test-Runner"
+        },
+        {
+          "id": "package-run-test-runner",
+          "name": "Run Test-Runner"
         }
       ]
-    }
+    },
+    "viewsWelcome": [
+      {
+        "view": "package-install-test-runner",
+        "contents": "Click to install the Test-Runner\n[Install](command:test-runner-extension-0.installTestRunner)\n"
+      }
+    ]
+    
   },
   "scripts": {
     "lint": "eslint .",
