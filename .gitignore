@@ -1,0 +1,20 @@
+Test-Runner-Extension/.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+ 
+# Local History for Visual Studio Code
+Test-Runner-Extension/.history/
+ 
+# Built Visual Studio Code Extensions
+Test-Runner-Extension/*.vsix
+
+Test-Runner-Extension/node_modules/
+
+Test-Runner-Extension/.vscode-test/vscode-win32-x64-archive-1.88.1/
+
+Test-Runner-Extension/.vscode-test/user-data/
+
+Test-Runner-Extension/.vscodeignore
