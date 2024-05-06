@@ -20,6 +20,10 @@
       {
         "command": "test-runner-extension-0.installTestRunner",
         "title": "Install Test-Runner"
+      },
+      {
+        "command": "test-runner-extension-0.runTest",
+        "title": "Run Test-Runner"
       }
   ],
     "menus": {
@@ -53,7 +57,11 @@
     "viewsWelcome": [
       {
         "view": "package-install-test-runner",
-        "contents": "Click to install the Test-Runner\n[Install](command:test-runner-extension-0.installTestRunner)\n"
+        "contents": "Click to choose path \n[Open Folder](command:vscode.openFolder)\n Click to install the Test-Runner\n[Install](command:test-runner-extension-0.installTestRunner)\n"
+      },
+      {
+        "view": "package-run-test-runner",
+        "contents": "Click to run the Test-Runner\n[Run](command:test-runner-extension-0.runTest)\n"
       }
     ]
     
