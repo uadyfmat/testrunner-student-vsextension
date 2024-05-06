@@ -4,12 +4,15 @@
 const vscode = require('vscode');
 const TestFile = require('./TestFile.js');
 const Test = require('./Test.js');
-
+const findSpecFiles = require('./Utils.js');
 
 function activate(context) {
 
     // need it to run the tests in the extension
     setupTestApi(context);
+    let path = vscode.workspace.workspaceFolders[0].uri.fsPath;
+    const specFilesFound = findSpecFiles(path);
+    console.log(specFilesFound);
 
     // Función para instalar Test-Runner
     let installTestRunner = vscode.commands.registerCommand('test-runner-extension-0.installTestRunner', () => {
