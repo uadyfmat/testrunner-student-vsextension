@@ -13,8 +13,6 @@
 
 [*Go to **Personas Scenarios***](./Personas%20Scenarios.md)
 
-[*Go back to to **Project Definition***](../../README.md)
-
 ## Description
 This section follows the Personas Methodology, answering the respective questions for each different step that the methodology presents.
 
