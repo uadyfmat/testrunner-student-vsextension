@@ -1,0 +1,35 @@
+const vscode = require('vscode');
+
+function activate(context) {
+    // Register the helloWorld command
+    let disposableHelloWorld = vscode.commands.registerCommand('test-runner-extension-0.helloWorld', function () {
+        vscode.window.showInformationMessage('Hello World from test-runner-extension-0!');
+    });
+    context.subscriptions.push(disposableHelloWorld);
+
+    // Register the installTestRunner command
+    let disposableInstallTestRunner = vscode.commands.registerCommand('test-runner-extension-0.installTestRunner', function () {
+        vscode.window.showInformationMessage('Install Test-Runner command executed.');
+    });
+    context.subscriptions.push(disposableInstallTestRunner);
+
+    // Register the runTest command
+    let disposableRunTest = vscode.commands.registerCommand('test-runner-extension-0.runTest', function () {
+        vscode.window.showInformationMessage('Run Test-Runner command executed.');
+    });
+    context.subscriptions.push(disposableRunTest);
+
+    // Register the showHelp command
+    let disposableShowHelp = vscode.commands.registerCommand('test-runner-extension-0.showHelp', function () {
+        // Open the walkthrough
+        vscode.commands.executeCommand('workbench.action.openWalkthrough', 'test-runner-extension-0.walkthrough', false);
+    });
+    context.subscriptions.push(disposableShowHelp);
+}
+
+function deactivate() { }
+
+module.exports = {
+    activate,
+    deactivate
+};

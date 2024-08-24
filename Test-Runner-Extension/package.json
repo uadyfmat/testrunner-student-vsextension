@@ -14,8 +14,8 @@
   "contributes": {
     "commands": [
       {
-      "command": "test-runner-extension-0.helloWorld",
-      "title": "Hello World"
+        "command": "test-runner-extension-0.helloWorld",
+        "title": "Hello World"
       },
       {
         "command": "test-runner-extension-0.installTestRunner",
@@ -25,7 +25,7 @@
         "command": "test-runner-extension-0.runTest",
         "title": "Run Test-Runner"
       }
-  ],
+    ],
     "menus": {
       "explorer/context": [
         {
@@ -42,8 +42,8 @@
         }
       ]
     },
-    "views":{
-      "test-runner":[
+    "views": {
+      "test-runner": [
         {
           "id": "package-install-test-runner",
           "name": "Install Test-Runner"
@@ -63,156 +63,111 @@
         "view": "package-run-test-runner",
         "contents": "Click to run the Test-Runner\n[Run](command:test-runner-extension-0.runTest)\n"
       }
-    ], "walkthroughs": [
-			{
-				"id": "sample",
-				"title": "Sample",
-				"description": "A sample walkthrough",
-				"steps": [
-					{
-						"id": "runcommand",
-						"title": "Run Command",
-						"description": "This step will run a command and check off once it has been run.\n[Run Command](command:getting-started-sample.runCommand)",
-						"media": {
-							"image": "media/image.png",
-							"altText": "Empty image"
-						},
-						"completionEvents": [
-							"onCommand:getting-started-sample.runCommand"
-						]
-					},
-					{
-						"id": "changesetting",
-						"title": "Change Setting",
-						"description": "This step will change a setting and check off when the setting has changed\n[Change Setting](command:getting-started-sample.changeSetting)",
-						"media": {
-              "markdown": "src/walkdocs/hello.md",
-							"altText": "Empty image"
-						},
-						"completionEvents": [
-							"onSettingChanged:getting-started-sample.sampleSetting"
-						]
-					},
-					{
-						"id": "setcontext",
-						"title": "Set Context",
-						"description": "This step will set a context key, and check off when that context has been set\n[Set Context](command:getting-started-sample.setContext)",
-						"media": {
-							"image": "media/image.png",
-							"altText": "Empty image"
-						},
-						"completionEvents": [
-							"onContext:gettingStartedContextKey"
-						]
-					},
-					{
-						"id": "install python extension",
-						"title": "Install Python Extension",
-						"description": "Click here to install the Python Extension. This step will complete once it has been installed.\n[Here](command:workbench.extensions.installExtension?%22ms-python.python%22)",
-						"media": {
-							"image": "media/image.png",
-							"altText": "Empty image"
-						},
-						"completionEvents": [
-							"extensionInstalled:ms-python.python"
-						]
-					},
-					{
-						"id": "open terminal view",
-						"title": "Open Terminal",
-						"description": "Click [here](command:workbench.action.terminal.toggleTerminal) to open terminal. This step will complete once the terminal has been opened.",
-						"media": {
-							"image": "media/image.png",
-							"altText": "Empty image"
-						},
-						"completionEvents": [
-							"onView:terminal"
-						]
-					},
-					{
-						"id": "usesvg",
-						"title": "Use SVG's",
-						"description": "Try out using SVG's in your content, they can react to the theme (try: ``var(--vscode-foreground)``) and even host command links (try: ``xlink:href=\"command:``)",
-						"media": {
-							"svg": "media/image.svg",
-							"altText": "Empty svg image"
-						}
-					},
-					{
-						"id": "mac",
-						"title": "UI Platform: Mac",
-						"description": "This step will only show on a Mac.",
-						"when": "isMac",
-						"media": {
-							"markdown": "media/mac.md"
-						}
-					},
-					{
-						"id": "windows",
-						"title": "UI Platform: Windows",
-						"description": "This step will only show on Windows",
-						"when": "isWindows",
-						"media": {
-							"markdown": "media/windows.md"
-						}
-					},
-					{
-						"id": "linux",
-						"title": "UI Platform: Linux",
-						"description": "This step will only show on Linux",
-						"when": "isLinux",
-						"media": {
-							"markdown": "media/linux.md"
-						}
-					},
-					{
-						"id": "macRemote",
-						"title": "Workspace Platform: Mac",
-						"description": "This step will only show on Mac remotes.",
-						"when": "workspacePlatform == 'mac'",
-						"media": {
-							"markdown": "media/mac.md"
-						}
-					},
-					{
-						"id": "windowsRemote",
-						"title": "Workspace Platform: Windows",
-						"description": "This step will only show on Windows remotes",
-						"when": "workspacePlatform == 'windows'",
-						"media": {
-							"markdown": "media/windows.md"
-						}
-					},
-					{
-						"id": "linuxRemote",
-						"title": "Workspace Platform: Linux",
-						"description": "This step will only show on Linux remotes",
-						"when": "workspacePlatform == 'linux'",
-						"media": {
-							"markdown": "media/linux.md"
-						}
-					},
-					{
-						"id": "webRemote",
-						"title": "Workspace Platform: Web",
-						"description": "This step will only show on webworker remotes",
-						"when": "workspacePlatform == 'webworker'",
-						"media": {
-							"markdown": "media/linux.md"
-						}
-					},
-					{
-						"id": "showSources",
-						"title": "View Sources",
-						"description": "Open a folder containg the sources of this extension.\n[View Sources](command:getting-started-sample.viewSources)",
-						"media": {
-							"image": "media/image.png",
-							"altText": "Empty image"
-						}
-					}
-				]
-			}
-		]
+    ],
+    "walkthroughs": [
+      {
+        "id": "sample",
+        "title": "Test Runner Guide",
+        "description": "Take your first steps in coding with Test Runner—an easy and efficient way to ensure your code runs perfectly, right inside a beginner-friendly editor!",
+        "steps": [
+          {
+            "id": "installGit",
+            "title": "Install Git",
+            "description": "Test Runner requires you to have installed Git on your computer.\n[Install Git](command:getting-started-sample.runCommand)",
+            "media": {
+              "markdown": "src/walkdocs/git.md",
+              "altText": "Empty image"
+            },
+            "completionEvents": [
+              "onCommand:getting-started-sample.runCommand"
+            ]
+          },
+          {
+            "id": "installNode",
+            "title": "Install Node.js and npm",
+            "description": "Test Runner requires you to have installed Node.js and npm on your computer\n[Install Node.js](command:getting-started-sample.changeSetting)",
+            "media": {
+              "markdown": "src/walkdocs/node.md",
+              "altText": "Empty image"
+            },
+            "completionEvents": [
+              "onSettingChanged:getting-started-sample.sampleSetting"
+            ]
+          },
+          {
+            "id": "createFolder",
+            "title": "Create a folder",
+            "description": "Click on the 'Open Folder' button on the top left side of your screen and create (or open) a new folder where you are going to work on your code.\n",
+            "media": {
+              "image": "resources/media/createFolder.png",
+              "altText": "Create Folder"
+            },
+            "completionEvents": [
+              "onContext:gettingStartedContextKey"
+            ]
+          },
+          {
+            "id": "createTestCases",
+            "title": "Create your Test Cases",
+            "description": "Create a file with the name 'spec.inout' inside the folder you created (or selected) and add your test cases inputs and their respective expected outputs.",
+            "media": {
+              "markdown": "src/walkdocs/testCases.md",
+              "altText": "Empty image"
+            },
+            "completionEvents": [
+              "extensionInstalled:ms-python.python"
+            ]
+          },
+          {
+            "id": "code",
+            "title": "Write your code!",
+            "description": "Here comes the fun part, coding!\nCreate a file named 'Solution' in your favorite programming language and write the code you are going to test.",
+            "media": {
+              "image": "resources/media/code.png",
+              "altText": "Solution Code"
+            },
+            "completionEvents": [
+              "onView:terminal"
+            ]
+          },
+          {
+            "id": "runTest",
+            "title": "Run your tests!",
+            "description": "Click on the 'Run' button on the left side of your Visual Studio Code screen to check if your code is correct and all your test cases pass.",
+            "media": {
+              "image": "resources/media/runTest.png",
+              "altText": "Run test button."
+            },
+            "completionEvents": [
+              "onView:terminal"
+            ]
+          },
+          {
+            "id": "failLearn",
+            "title": "Fail and Learn",
+            "description": "If one of your test cases didn't pass don't worry. Just correct your mistakes and re-run Test Runner!",
+            "media": {
+              "image": "media/image.png",
+              "altText": "Comming Soon"
+            },
+            "completionEvents": [
+              "onView:terminal"
+            ]
+          },
+          {
+            "id": "help",
+            "title": "Help",
+            "description": "If you wan't to check back this steps just open the command palette:\nIn Windows and Linux: Ctrl + Shift + P\nIn Mac: Shift + Command + P.\nOnce the interface is displayed on the top of the screen type 'Welcome: Open Walkthrough' and selected that option. Then select 'Test Runner Guide' to review all the steps. Happy coding!",
+            "media": {
+              "image": "resources/media/help.png"
+            },
+            "completionEvents": [
+              "onView:terminal"
+            ]
+          }
+        ]
+      }
+    ]
   },
   "scripts": {
     "lint": "eslint .",
