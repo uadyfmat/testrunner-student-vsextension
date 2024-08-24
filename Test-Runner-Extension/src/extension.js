@@ -1,6 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 
 // Import the module and reference it with the alias vscode in your code below
+// @ts-ignore
 const vscode = require('vscode');
 const TestFile = require('./TestFile.js');
 const Test = require('./Test.js');
@@ -12,6 +13,7 @@ function activate(context) {
     setupTestApi(context);
     let path = vscode.workspace.workspaceFolders[0].uri.fsPath;
     const specFilesFound = findSpecFiles(path);
+    // @ts-ignore
     console.log(specFilesFound);
 
     // Función para instalar Test-Runner
@@ -51,9 +53,19 @@ function activate(context) {
         }
     });
 
+    let installNode = vscode.commands.registerCommand('test-runner-extension-0.installNode', function () {
+        vscode.env.openExternal(vscode.Uri.parse('https://nodejs.org/'));
+    });
+
+    let installGitBash = vscode.commands.registerCommand('test-runner-extension-0.installGitBash', function () {
+    vscode.env.openExternal(vscode.Uri.parse('https://gitforwindows.org/'));
+    });
+
     // Agrega ambas funciones a las suscripciones del contexto
     context.subscriptions.push(installTestRunner);
     context.subscriptions.push(runTest);
+    context.subscriptions.push(installNode);
+    context.subscriptions.push(installGitBash);
 }
 
 function setupTestApi(context) {
@@ -65,6 +77,7 @@ function setupTestApi(context) {
 	let testFile = new TestFile();
 	let tests = testFile.search();
 
+	// @ts-ignore
 	let testItems = tests.map(test => controller.createTestItem(test.name, test.description));
 	for (let item of testItems) {
 		controller.items.add(item);
