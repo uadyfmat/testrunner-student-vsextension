@@ -45,6 +45,10 @@
     "views":{
       "test-runner":[
         {
+          "id": "package-install-dependencies",
+          "name": "Install Dependencies"
+        },
+        {
           "id": "package-install-test-runner",
           "name": "Install Test-Runner"
         },
@@ -55,6 +59,10 @@
       ]
     },
     "viewsWelcome": [
+      {
+        "view": "package-install-dependencies",
+        "contents": "Click to install Chocolatey\n[Install](command:test-runner-extension-0.installChocolatey)\nClick to install Node.js \n[Install](command:test-runner-extension-0.installNode)\n Click to install Git Bash\n[Install](command:test-runner-extension-0.installGitBash)\n"
+      },
       {
         "view": "package-install-test-runner",
         "contents": "Click to choose path \n[Open Folder](command:vscode.openFolder)\n Click to install the Test-Runner\n[Install](command:test-runner-extension-0.installTestRunner)\n"

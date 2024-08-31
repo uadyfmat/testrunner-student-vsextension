@@ -43,9 +43,48 @@ function activate(context) {
         }
     });
 
+    /* let installNode = vscode.commands.registerCommand('test-runner-extension-0.installNode', function () {
+        vscode.env.openExternal(vscode.Uri.parse('https://nodejs.org/'));
+    }); */
+
+   // Función para instalar Node.js usando Chocolatey
+
+    let installNode = vscode.commands.registerCommand('test-runner-extension-0.installNode', function () {
+        const terminal = vscode.window.createTerminal({
+            name: "Terminal de Instalación",
+            shellPath: "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+        });
+        terminal.sendText("choco install nodejs -y");
+        terminal.show();
+    });
+
+
+    // Función para instalar Git Bash usando Chocolatey
+    /* let installGitBash = vscode.commands.registerCommand('test-runner-extension-0.installGitBash', function () {
+        const terminal = vscode.window.createTerminal({
+            name: "Terminal de Instalación",
+            shellPath: "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+        });
+        terminal.sendText("choco install git -y");
+        terminal.show();
+    }); */
+
+
+    let installGitBash = vscode.commands.registerCommand('test-runner-extension-0.installGitBash', function () {
+    vscode.env.openExternal(vscode.Uri.parse('https://gitforwindows.org/'));
+    });
+
+    // Función para instalar Chocolatey
+    let installChocolatey = vscode.commands.registerCommand('test-runner-extension-0.installChocolatey', function () {
+        vscode.window.showInformationMessage("Para instalar Chocolatey, abre una terminal de PowerShell como administrador y ejecuta el siguiente comando:\n\nSet-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))");
+    });
+
     // Agrega ambas funciones a las suscripciones del contexto
     context.subscriptions.push(installTestRunner);
     context.subscriptions.push(runTest);
+    context.subscriptions.push(installNode);
+    context.subscriptions.push(installGitBash);
+    context.subscriptions.push(installChocolatey);
 }
 
 
