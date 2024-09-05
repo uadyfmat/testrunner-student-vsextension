@@ -1,6 +1,6 @@
 {
-  "name": "test-runner-extension-0",
-  "displayName": "Test-Runner-extension-0",
+  "name": "test-runner-extension",
+  "displayName": "Test-Runner-extension",
   "description": "Extencion de prueba para el Test-Runner",
   "version": "0.0.1",
   "engines": {
@@ -14,22 +14,22 @@
   "contributes": {
     "commands": [
       {
-        "command": "test-runner-extension-0.helloWorld",
+        "command": "test-runner-extension.helloWorld",
         "title": "Hello World"
       },
       {
-        "command": "test-runner-extension-0.installTestRunner",
+        "command": "test-runner-extension.installTestRunner",
         "title": "Install Test-Runner"
       },
       {
-        "command": "test-runner-extension-0.runTest",
+        "command": "test-runner-extension.runTest",
         "title": "Run Test-Runner"
       }
     ],
     "menus": {
       "explorer/context": [
         {
-          "command": "test-runner-extension-0.installTestRunner"
+          "command": "test-runner-extension.installTestRunner"
         }
       ]
     },
@@ -57,11 +57,11 @@
     "viewsWelcome": [
       {
         "view": "package-install-test-runner",
-        "contents": "Click to choose path \n[Open Folder](command:vscode.openFolder)\n Click to install the Test-Runner\n[Install](command:test-runner-extension-0.installTestRunner)\n"
+        "contents": "Click to choose path \n[Open Folder](command:vscode.openFolder)\n Click to install the Test-Runner\n[Install](command:test-runner-extension.installTestRunner)\n"
       },
       {
         "view": "package-run-test-runner",
-        "contents": "Click to run the Test-Runner\n[Run](command:test-runner-extension-0.runTest)\n"
+        "contents": "Click to run the Test-Runner\n[Run](command:test-runner-extension.runTest)\n"
       }
     ],
     "walkthroughs": [
@@ -88,6 +88,18 @@
             "description": "Test Runner requires you to have installed Node.js and npm on your computer\n[Install Node.js](command:getting-started-sample.changeSetting)",
             "media": {
               "markdown": "src/walkdocs/node.md",
+              "altText": "Empty image"
+            },
+            "completionEvents": [
+              "onSettingChanged:getting-started-sample.sampleSetting"
+            ]
+          },
+          {
+            "id": "installTestRunner",
+            "title": "Install Test Runner",
+            "description": "Once you have node.js and npm installed in your computer you'll have to install the Test Runner dependency.\n[Install Test Runner](command:getting-started-sample.changeSetting)",
+            "media": {
+              "markdown": "src/walkdocs/testRunner.md",
               "altText": "Empty image"
             },
             "completionEvents": [
