@@ -1,8 +1,7 @@
 const vscode = require('vscode');
 const util = require('util');
 const child_process = require('child_process');
-const findSpecFiles = require('./Utils.js');
-const path = require('path');
+const utils = require('../Utils.js');
 
 /**
  * @class Test
@@ -26,7 +25,6 @@ class Test {
     }
 
     async executeCommand(command) {
-        console.log(command);
         try {
             const { stdout, stderr } = await this.promisifiedExec(command, { shell: 'C:\\Program Files\\Git\\bin\\bash.exe' });
             return { stdout, stderr };
@@ -47,7 +45,7 @@ class Test {
     async evaluate() {
         // in the workspace, find the spec files
         let workspaceFolder = vscode.workspace.workspaceFolders[0].uri.fsPath;
-        const specFilesFound = findSpecFiles(workspaceFolder);
+        const specFilesFound = utils.findSpecFiles(workspaceFolder);
 
         // find the test specific spec file and get its path
         let testSpec = specFilesFound.find(specFile => specFile.name === this.testItem.id);
@@ -58,7 +56,6 @@ class Test {
 
         try {
             const { stdout } = await this.executeCommand(normalizedCommand);
-            console.log(stdout);
             this.handleTestResult(stdout);
         } catch (error) {
             console.log(error);
