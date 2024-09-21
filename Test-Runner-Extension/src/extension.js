@@ -4,10 +4,13 @@
 const vscode = require('vscode');
 const TestFile = require('./TestFile.js');
 const Test = require('./Test.js');
+const findSpecFiles = require('./Utils.js');
+const detectOperatingSystem = require("./OSUtils.js");
 const utils = require('./Utils.js');
 
 function activate(context) {
-
+    const userOS = detectOperatingSystem();
+    console.log(`OS : ${userOS}`);
     // need it to run the tests in the extension
     setupTestApi(context);
     let path = vscode.workspace.workspaceFolders[0].uri.fsPath;
@@ -26,38 +29,37 @@ function activate(context) {
 }
 
 function setupTestApi(context) {
-	const controller = vscode.tests.createTestController(
-		'FMAT_UADY_TEST_RUNNER_2024', 
-		'Test Runner Controller'
-	);
-	
-	let testFile = new TestFile();
-	let tests = testFile.search();
+    const controller = vscode.tests.createTestController(
+        'FMAT_UADY_TEST_RUNNER_2024',
+        'Test Runner Controller'
+    );
 
-	// @ts-ignore
-	let testItems = tests.map(test => controller.createTestItem(test.name, test.description));
-	for (let item of testItems) {
-		controller.items.add(item);
-	}
+    let testFile = new TestFile();
+    let tests = testFile.search();
 
-	const handler = (request, _) => {
-		const run = controller.createTestRun(request, 'Test Runner', false);
-		let tests = request.include;
+    let testItems = tests.map(test => controller.createTestItem(test.name, test.description));
+    for (let item of testItems) {
+        controller.items.add(item);
+    }
 
-		if (tests) {
-			run.started(tests[0]);
-			let myTest = new Test(run, tests[0]);
-			myTest.evaluate();
-		} else {
-			// logic for running all the tests
-		}
-	}
+    const handler = (request, _) => {
+        const run = controller.createTestRun(request, 'Test Runner', false);
+        let tests = request.include;
 
-	const runProfile = controller.createRunProfile('Run', vscode.TestRunProfileKind.Run, handler);
-	context.subscriptions.push(controller, runProfile);
+        if (tests) {
+            run.started(tests[0]);
+            let myTest = new Test(run, tests[0]);
+            myTest.evaluate();
+        } else {
+            // logic for running all the tests
+        }
+    }
+
+    const runProfile = controller.createRunProfile('Run', vscode.TestRunProfileKind.Run, handler);
+    context.subscriptions.push(controller, runProfile);
 }
 
-function deactivate() {}
+function deactivate() { }
 
 module.exports = {
     activate,
