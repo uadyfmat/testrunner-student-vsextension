@@ -11,12 +11,14 @@ function findSpecFiles(directory) {
 
         for (const file of files) {
             const fullPath = path.join(currentPath, file.name);
+            
             if (file.isDirectory()) {
                 exploreDirectory(fullPath);
             } else if (file.name === 'spec.inout') {
+                const parentFolderName = path.basename(currentPath);
                 specFiles.push({
-                    name: file.name,
-                    path: fullPath
+                    name: parentFolderName,
+                    path: currentPath
                 });
             }
         }
