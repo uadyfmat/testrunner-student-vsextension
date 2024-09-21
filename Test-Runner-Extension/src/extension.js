@@ -9,7 +9,12 @@ function activate(context) {
     console.log(`OS : ${userOS}`);
 
     // need it to run the tests in the extension
-    setupTestApi(context);
+    // if (vscode.workspace.workspaceFolders[0].uri.fsPath)
+
+    // if not workspace is open, don't run setupTestApi
+    if (vscode.workspace.workspaceFolders) {
+        setupTestApi(context);
+    }
 
     // Función para instalar Test-Runner
     let installTestRunner = vscode.commands.registerCommand('test-runner-extension.installTestRunner', utils.installExtension);
