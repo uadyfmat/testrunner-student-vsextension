@@ -90,7 +90,9 @@ function checkNodeAndNpmInstalled() {
 function checkGitBashInstalled() {
     if (os.platform() === 'win32') {
         // Comprobamos si Git Bash está instalado en Windows buscando bash.exe
-        execFile('where', ['bash.exe'], (error, stdout, stderr) => {
+        const gitBashPath = 'C:\\Program Files\\Git\\git-bash.exe';
+        // Verificamos si git-bash.exe existe
+        execFile(gitBashPath, ['--version'], (error, stdout, stderr) => {
             if (error) {
                 vscode.window.showErrorMessage('Git Bash no está instalado o no está en el PATH.');
             } else {
