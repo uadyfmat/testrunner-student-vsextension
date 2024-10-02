@@ -1,6 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 const vscode = require('vscode');
+const { exec, execFile } = require('child_process');
+const os = require('os');
+
 
 function findSpecFiles(directory) {
     let specFiles = [];
@@ -63,9 +66,56 @@ const runTestRunner = async () => {
     }
 }
 
+// Función para verificar si Node.js y npm están instalados
+function checkNodeAndNpmInstalled() {
+    exec('node -v', (error, stdout, stderr) => {
+        if (error) {
+            vscode.window.showErrorMessage('Node.js no está instalado o no está en el PATH.');
+            return;
+        } else {
+            vscode.window.showInformationMessage(`Node.js está instalado. Versión: ${stdout}`);
+        }
+    });
+
+    exec('npm -v', (error, stdout, stderr) => {
+        if (error) {
+            vscode.window.showErrorMessage('npm no está instalado o no está en el PATH.');
+        } else {
+            vscode.window.showInformationMessage(`npm está instalado. Versión: ${stdout}`);
+        }
+    });
+}
+
+// Función para verificar si Git Bash está instalado
+function checkGitBashInstalled() {
+    if (os.platform() === 'win32') {
+        // Comprobamos si Git Bash está instalado en Windows buscando bash.exe
+        const gitBashPath = 'C:\\Program Files\\Git\\git-bash.exe';
+        // Verificamos si git-bash.exe existe
+        execFile(gitBashPath, ['--version'], (error, stdout, stderr) => {
+            if (error) {
+                vscode.window.showErrorMessage('Git Bash no está instalado o no está en el PATH.');
+            } else {
+                vscode.window.showInformationMessage(`Git Bash está instalado: ${stdout}`);
+            }
+        });
+    }
+    // Para otros sistemas operativos, verificar solo si Git está instalado
+    exec('git --version', (error, stdout, stderr) => {
+        if (error) {
+            vscode.window.showErrorMessage('Git no está instalado o no está en el PATH.');
+        } else {
+            vscode.window.showInformationMessage(`Git está instalado. Versión: ${stdout}`);
+        }
+    });
+}
+
+
 module.exports = 
 {
     findSpecFiles,
     installExtension,
-    runTestRunner
+    runTestRunner,
+    checkNodeAndNpmInstalled,
+    checkGitBashInstalled
 };

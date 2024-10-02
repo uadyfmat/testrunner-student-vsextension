@@ -24,6 +24,14 @@
       {
         "command": "test-runner-extension.runTest",
         "title": "Run Test-Runner"
+      },
+      {
+        "command": "test-runner-extension.checkNodeNpm",
+        "title": "Verify npm and node"
+      },
+      {
+        "command": "test-runner-extension.checkGitBash",
+        "title": "Verify Git Bash"
       }
     ],
     "menus": {
