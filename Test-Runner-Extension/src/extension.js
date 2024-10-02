@@ -22,9 +22,17 @@ function activate(context) {
     // Función para ejecutar Test-Runner con entrada del usuario
     let runTest = vscode.commands.registerCommand('test-runner-extension.runTest', utils.runTestRunner);
 
+    // Comando para verificar Node.js y npm
+    let checkNodeNpm = vscode.commands.registerCommand('test-runner-extension.checkNodeNpm', utils.checkNodeAndNpmInstalled);
+
+    // Comando para verificar Git Bash
+    let checkGitBash = vscode.commands.registerCommand('test-runner-extension.checkGitBash', utils.checkGitBashInstalled);
+
     // Agrega ambas funciones a las suscripciones del contexto
     context.subscriptions.push(installTestRunner);
     context.subscriptions.push(runTest);
+    context.subscriptions.push(checkNodeNpm);
+    context.subscriptions.push(checkGitBash);
 }
 
 function deactivate() {}
