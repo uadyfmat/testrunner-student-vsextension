@@ -3,7 +3,6 @@ const setupTestApi = require('./TestExplorer/main.js');
 const detectOperatingSystem = require("./OSUtils.js");
 const utils = require('./Utils.js');
 
-
 function activate(context) {
     const userOS = detectOperatingSystem();
     console.log(`OS : ${userOS}`);
@@ -22,12 +21,16 @@ function activate(context) {
     // Función para ejecutar Test-Runner con entrada del usuario
     let runTest = vscode.commands.registerCommand('test-runner-extension.runTest', utils.runTestRunner);
 
+    // Función para instalar node y npm
+    let installNodeNpm = vscode.commands.registerCommand('test-runner-extension.installNode', utils.installNodeAndNpm(userOS));
     // Agrega ambas funciones a las suscripciones del contexto
     context.subscriptions.push(installTestRunner);
     context.subscriptions.push(runTest);
+    context.subscriptions.push(installNodeNpm);
+
 }
 
-function deactivate() {}
+function deactivate() { }
 
 module.exports = {
     activate,

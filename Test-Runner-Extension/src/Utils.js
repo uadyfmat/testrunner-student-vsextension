@@ -1,6 +1,9 @@
+import { error } from 'console';
+
 const fs = require('fs');
 const path = require('path');
 const vscode = require('vscode');
+const { exec } = require('child_process');
 
 function findSpecFiles(directory) {
     let specFiles = [];
@@ -11,7 +14,7 @@ function findSpecFiles(directory) {
 
         for (const file of files) {
             const fullPath = path.join(currentPath, file.name);
-            
+
             if (file.isDirectory()) {
                 exploreDirectory(fullPath);
             } else if (file.name === 'spec.inout') {
@@ -63,9 +66,54 @@ const runTestRunner = async () => {
     }
 }
 
-module.exports = 
+function installNodeAndNpm(os) {
+    return new Promise((resolve, reject) => {
+        if (os === "MacOs") {
+            const checkBrew = `brew --version`;
+            const installBrew = `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`;
+            const installNode = `brew install node`;
+
+            exec(checkBrew, (error) => {
+                if (error) {
+                    console.log('Homebrew is not installed. Installing Homebrew...');
+                    exec(installBrew, (error) => {
+                        if (error) {
+                            console.error('Failed to install Homebrew:', error);
+                            reject(error);
+                        } else {
+                            console.log('Homebrew installed successfully.');
+                            exec(installNode, (error) => {
+                                if (error) {
+                                    console.error('Failed to install Node.js and npm:', error);
+                                    reject(error);
+                                } else {
+                                    console.log('Node.js and npm installed successfully.');
+                                    resolve();
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    console.log('Homebrew is already installed. Installing Node.js and npm...');
+                    exec(installNode, (error) => {
+                        if (error) {
+                            console.error('Failed to install Node.js and npm:', error);
+                            reject(error);
+                        } else {
+                            console.log('Node.js and npm installed successfully.');
+                            resolve();
+                        }
+                    });
+                }
+            });
+        }
+    });
+}
+
+module.exports =
 {
     findSpecFiles,
     installExtension,
-    runTestRunner
+    runTestRunner,
+    installNodeAndNpm
 };
