@@ -1,5 +1,3 @@
-import { error } from 'console';
-
 const fs = require('fs');
 const path = require('path');
 const vscode = require('vscode');
@@ -75,38 +73,51 @@ function installNodeAndNpm(os) {
 
             exec(checkBrew, (error) => {
                 if (error) {
-                    console.log('Homebrew is not installed. Installing Homebrew...');
+                    vscode.window.showInformationMessage('Homebrew is not installed. Installing Homebrew...');
                     exec(installBrew, (error) => {
                         if (error) {
-                            console.error('Failed to install Homebrew:', error);
+                            vscode.window.showErrorMessage('Failed to install Homebrew:', error);
                             reject(error);
                         } else {
-                            console.log('Homebrew installed successfully.');
+                            vscode.window.showInformationMessage('Homebrew installed successfully.');
                             exec(installNode, (error) => {
                                 if (error) {
-                                    console.error('Failed to install Node.js and npm:', error);
+                                    vscode.window.showErrorMessage('Failed to install Node.js and npm:', error);
                                     reject(error);
                                 } else {
-                                    console.log('Node.js and npm installed successfully.');
+                                    vscode.window.showInformationMessage('Node.js and npm installed successfully.');
                                     resolve();
                                 }
                             });
                         }
                     });
                 } else {
-                    console.log('Homebrew is already installed. Installing Node.js and npm...');
+                    vscode.window.showInformationMessage('Homebrew is already installed. Installing Node.js and npm...');
                     exec(installNode, (error) => {
                         if (error) {
-                            console.error('Failed to install Node.js and npm:', error);
+                            vscode.window.showErrorMessage('Failed to install Node.js and npm:', error);
                             reject(error);
                         } else {
-                            console.log('Node.js and npm installed successfully.');
+                            vscode.window.showInformationMessage('Node.js and npm installed successfully.');
                             resolve();
                         }
                     });
                 }
             });
         }
+    });
+}
+
+function isHomebrewInstalled() {
+    return new Promise((resolve) => {
+        const checkBrew = `brew --version`;
+        exec(checkBrew, (error) => {
+            if (error) {
+                resolve(false);
+            } else {
+                resolve(true);
+            }
+        });
     });
 }
 
