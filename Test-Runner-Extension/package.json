@@ -24,6 +24,10 @@
       {
         "command": "test-runner-extension.runTest",
         "title": "Run Test-Runner"
+      },
+      {
+        "command": "test-runner-extension.installNode",
+        "title": "Install Node.js and NPM"
       }
     ],
     "menus": {
@@ -85,7 +89,7 @@
           {
             "id": "installNode",
             "title": "Install Node.js and npm",
-            "description": "Test Runner requires you to have installed Node.js and npm on your computer\n[Install Node.js](command:getting-started-sample.changeSetting)",
+            "description": "Test Runner requires you to have installed Node.js and npm on your computer\n[Install Node.js](command:test-runner-extension.installNode)",
             "media": {
               "markdown": "src/walkdocs/node.md",
               "altText": "Empty image"

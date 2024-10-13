@@ -1,6 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 const vscode = require('vscode');
+const { exec } = require('child_process');
+const detectOperatingSystem = require("./OSUtils.js");
+const DependencyChecker = require('./CheckDependenses.js');
+const InstallDependencies = require('./InstallDependencies.js');
 
 function findSpecFiles(directory) {
     let specFiles = [];
@@ -11,7 +15,7 @@ function findSpecFiles(directory) {
 
         for (const file of files) {
             const fullPath = path.join(currentPath, file.name);
-            
+
             if (file.isDirectory()) {
                 exploreDirectory(fullPath);
             } else if (file.name === 'spec.inout') {
@@ -63,9 +67,76 @@ const runTestRunner = async () => {
     }
 }
 
-module.exports = 
+
+const doctor = async () => {
+    const userOS = detectOperatingSystem();
+
+    // el checar la instalación de node es global así que no es necesario definir el sistema operativo aquí. 
+    const isNodeInstaled = await DependencyChecker.checkNodeInstallation();
+    console.log("Sistema operativo: ", userOS);
+    switch (userOS) {
+        case "Windows":
+            // windows necesita git, node, npm y test runner
+            DependencyChecker.checkNPMInstallation();
+            DependencyChecker.checkGitInstallation();
+            DependencyChecker.checkTestRunnerInstallation();
+
+            break;
+
+        case "Linux":
+            // Linux solo necesita revisar node y npm
+            DependencyChecker.checkNPMInstallation();
+            break;
+
+        case "MacOs":
+            // Mac solo necesita el bash, node y npm
+            const isNPMInstalled = await DependencyChecker.checkNPMInstallation();
+            const isBashInstalled = await DependencyChecker.checkBashnInstallation();
+            break;
+
+        default:
+            break;
+    }
+}
+
+const installNodeAndNPMBtn = async () => {
+    const userOS = detectOperatingSystem();
+    switch (userOS) {
+        case "Windows":
+            // Instalación de node por url
+            break;
+        case "Linux":
+            // Instalación de node para Linux
+            break;
+        case "MacOs":
+            // Instalación de node y npm para MacOs
+            const isNodeInstalled = await DependencyChecker.checkNodeInstallation();
+            const isNPMInstalled = await DependencyChecker.checkNPMInstallation();
+
+            if (!isNodeInstalled || !isNPMInstalled) {
+                console.log('Checking for Homebrew...');
+                const isHomeBrewInstalled = await DependencyChecker.checkHomeBrewInstallation();
+                if (!isHomeBrewInstalled) {
+                    console.log("Installing Homebrew...")
+                    await InstallDependencies.installHomeBrew();
+                }
+                console.log("Installing Node.js and npm");
+                await InstallDependencies.installNodeAndNpmWithBrew();
+            } else {
+                console.log("Node.js and npm already installed");
+            }
+
+            break;
+        default:
+            break;
+    }
+}
+
+module.exports =
 {
     findSpecFiles,
     installExtension,
-    runTestRunner
+    runTestRunner,
+    installNodeAndNPMBtn,
+    doctor
 };
