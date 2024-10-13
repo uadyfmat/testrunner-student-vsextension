@@ -2,6 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const vscode = require('vscode');
 const { exec } = require('child_process');
+const detectOperatingSystem = require("./OSUtils.js");
+const DependencyChecker = require('./CheckDependenses.js');
+const InstallDependencies = require('./InstallDependencies.js');
 
 function findSpecFiles(directory) {
     let specFiles = [];
@@ -64,61 +67,69 @@ const runTestRunner = async () => {
     }
 }
 
-function installNodeAndNpm(os) {
-    return new Promise((resolve, reject) => {
-        if (os === "MacOs") {
-            const checkBrew = `brew --version`;
-            const installBrew = `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`;
-            const installNode = `brew install node`;
 
-            exec(checkBrew, (error) => {
-                if (error) {
-                    vscode.window.showInformationMessage('Homebrew is not installed. Installing Homebrew...');
-                    exec(installBrew, (error) => {
-                        if (error) {
-                            vscode.window.showErrorMessage('Failed to install Homebrew:', error);
-                            reject(error);
-                        } else {
-                            vscode.window.showInformationMessage('Homebrew installed successfully.');
-                            exec(installNode, (error) => {
-                                if (error) {
-                                    vscode.window.showErrorMessage('Failed to install Node.js and npm:', error);
-                                    reject(error);
-                                } else {
-                                    vscode.window.showInformationMessage('Node.js and npm installed successfully.');
-                                    resolve();
-                                }
-                            });
-                        }
-                    });
-                } else {
-                    vscode.window.showInformationMessage('Homebrew is already installed. Installing Node.js and npm...');
-                    exec(installNode, (error) => {
-                        if (error) {
-                            vscode.window.showErrorMessage('Failed to install Node.js and npm:', error);
-                            reject(error);
-                        } else {
-                            vscode.window.showInformationMessage('Node.js and npm installed successfully.');
-                            resolve();
-                        }
-                    });
-                }
-            });
-        }
-    });
+const doctor = async () => {
+    const userOS = detectOperatingSystem();
+
+    // el checar la instalación de node es global así que no es necesario definir el sistema operativo aquí. 
+    const isNodeInstaled = await DependencyChecker.checkNodeInstallation();
+    console.log("Sistema operativo: ", userOS);
+    switch (userOS) {
+        case "Windows":
+            // windows necesita git, node, npm y test runner
+            DependencyChecker.checkNPMInstallation();
+            DependencyChecker.checkGitInstallation();
+            DependencyChecker.checkTestRunnerInstallation();
+
+            break;
+
+        case "Linux":
+            // Linux solo necesita revisar node y npm
+            DependencyChecker.checkNPMInstallation();
+            break;
+
+        case "MacOs":
+            // Mac solo necesita el bash, node y npm
+            const isNPMInstalled = await DependencyChecker.checkNPMInstallation();
+            const isBashInstalled = await DependencyChecker.checkBashnInstallation();
+            break;
+
+        default:
+            break;
+    }
 }
 
-function isHomebrewInstalled() {
-    return new Promise((resolve) => {
-        const checkBrew = `brew --version`;
-        exec(checkBrew, (error) => {
-            if (error) {
-                resolve(false);
+const installNodeAndNPMBtn = async () => {
+    const userOS = detectOperatingSystem();
+    switch (userOS) {
+        case "Windows":
+            // Instalación de node por url
+            break;
+        case "Linux":
+            // Instalación de node para Linux
+            break;
+        case "MacOs":
+            // Instalación de node y npm para MacOs
+            const isNodeInstalled = await DependencyChecker.checkNodeInstallation();
+            const isNPMInstalled = await DependencyChecker.checkNPMInstallation();
+
+            if (!isNodeInstalled || !isNPMInstalled) {
+                console.log('Checking for Homebrew...');
+                const isHomeBrewInstalled = await DependencyChecker.checkHomeBrewInstallation();
+                if (!isHomeBrewInstalled) {
+                    console.log("Installing Homebrew...")
+                    await InstallDependencies.installHomeBrew();
+                }
+                console.log("Installing Node.js and npm");
+                await InstallDependencies.installNodeAndNpmWithBrew();
             } else {
-                resolve(true);
+                console.log("Node.js and npm already installed");
             }
-        });
-    });
+
+            break;
+        default:
+            break;
+    }
 }
 
 module.exports =
@@ -126,5 +137,6 @@ module.exports =
     findSpecFiles,
     installExtension,
     runTestRunner,
-    installNodeAndNpm
+    installNodeAndNPMBtn,
+    doctor
 };

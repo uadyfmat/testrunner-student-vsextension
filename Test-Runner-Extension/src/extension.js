@@ -22,7 +22,7 @@ function activate(context) {
     let runTest = vscode.commands.registerCommand('test-runner-extension.runTest', utils.runTestRunner);
 
     // Función para instalar node y npm
-    let installNodeNpm = vscode.commands.registerCommand('test-runner-extension.installNode', utils.installNodeAndNpm(userOS));
+    let installNodeNpm = vscode.commands.registerCommand('test-runner-extension.installNode', utils.installNodeAndNPMBtn());
     // Agrega ambas funciones a las suscripciones del contexto
     context.subscriptions.push(installTestRunner);
     context.subscriptions.push(runTest);
