@@ -52,7 +52,7 @@ class Test {
         const shell = this.getShellForOS();  // Get appropriate shell for the OS
 
         try {
-            const { stdout, stderr } = await this.promisifiedExec(command, { shell });
+            const { stdout, stderr } = await this.promisifiedExec(command, { shell: shell });
             return { stdout, stderr };
         } catch (error) {
             console.error('Execution failed:', error);
@@ -60,12 +60,38 @@ class Test {
         }
     }
 
-    handleTestResult(stdout) {
-        if (stdout.includes('FAILING')) {
-            this.vscodeTestRun.failed(this.testItem, new vscode.TestMessage(`Test failed: ${this.testItem.label}`));
-        } else {
+    /**
+     * Cleans and normalizes the output by removing extra whitespace and ensuring uniform formatting.
+     * This cleanning is need due an error with vscode api where \n without \r in run.end(testMessage) doesn't render as expected
+     * @param {string} output - The CLI output to clean.
+     * @returns {string} The cleaned output.
+     */
+    cleanOutput(output) {
+        return output
+            .replace(/\t+/g, ' ')  // Replace tabs with a single space
+            .replace(/\s+$/gm, '') // Trim trailing whitespace on each line
+            .replace(/\n/g, '\r\n') // Ensure proper line endings (\r\n)
+            .replace(/\r\n{2,}/g, '\r\n'); // Replace multiple consecutive \r\n with a single \r\n
+    }
+
+    handleTestResult(stdout, stderr) {
+        if (stdout.includes('PASSING')) {
             this.vscodeTestRun.passed(this.testItem, 0);
+        } else if (stdout.includes('FAILING')) {
+            let failMessage = `Test failed: ${this.testItem.label}`;
+            this.vscodeTestRun.failed(this.testItem, new vscode.TestMessage(failMessage));
+        } else {
+            // this might be a failiure not related to a user coding error, but rather related to the test-runner not able to find a path, or not able to execute the test
+            let errorMessage = stderr 
+                ? `Test encountered an error: ${stderr.trim()}` 
+                : `Internal Error. Test NOT executed. Check extension installation, compiler or interpreters: ${this.testItem.label}`;
+            this.vscodeTestRun.errored(this.testItem, new vscode.TestMessage(errorMessage));
         }
+    
+        if (stdout) this.vscodeTestRun.appendOutput(this.cleanOutput(stdout));
+        if (stderr) this.vscodeTestRun.appendOutput(this.cleanOutput(stdout));
+    
+        this.vscodeTestRun.end();
     }
 
     async evaluate() {
@@ -81,8 +107,8 @@ class Test {
         let normalizedCommand = this.normalizeCommand(testPath);
 
         try {
-            const { stdout } = await this.executeCommand(normalizedCommand);
-            this.handleTestResult(stdout);
+            const { stdout, stderr } = await this.executeCommand(normalizedCommand);
+            this.handleTestResult(stdout, stderr);
         } catch (error) {
             console.log(error);
         }
