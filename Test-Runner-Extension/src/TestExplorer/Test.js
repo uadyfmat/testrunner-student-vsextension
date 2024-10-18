@@ -2,6 +2,8 @@ const vscode = require('vscode');
 const util = require('util');
 const child_process = require('child_process');
 const utils = require('../Utils.js');
+const detectOperatingSystem = require('../OSUtils.js');  
+const path = require('path');
 
 /**
  * @class Test
@@ -19,14 +21,39 @@ class Test {
     }
 
     normalizeCommand(relativePath) {
-        let command = `test-runner /${relativePath}`;
-        let normalizedCommand = command.replace(/\\/g, '/');
-        return normalizedCommand.replace(':', '');
+        const osName = detectOperatingSystem();
+    
+        let command = `test-runner ${relativePath}`;
+        
+        if (osName === 'Windows') {
+            // Normalize Windows paths using forward slashes for Git Bash compatibility
+            let normalizedCommand = command.replace(/\\/g, '/');
+            normalizedCommand = normalizedCommand.replace(':', ''); // Removes drive letter colon (C:)
+            return normalizedCommand;
+        } else {
+            // For Unix-based systems (macOS/Linux), use POSIX paths
+            return path.posix.normalize(command);  // Ensures paths are correctly formatted for Unix
+        }
+    }
+
+    getShellForOS() {
+        const osName = detectOperatingSystem();
+        switch (osName) {
+            case 'MacOs':
+            case 'Linux':
+                return '/bin/bash';  // Use bash for macOS and Linux
+            case 'Windows':
+                return 'C:\\Program Files\\Git\\bin\\bash.exe';  // Use Git Bash for Windows
+            default:
+                throw new Error('Unsupported OS: ' + osName);
+        }
     }
 
     async executeCommand(command) {
+        const shell = this.getShellForOS();  // Get appropriate shell for the OS
+
         try {
-            const { stdout, stderr } = await this.promisifiedExec(command, { shell: 'C:\\Program Files\\Git\\bin\\bash.exe' });
+            const { stdout, stderr } = await this.promisifiedExec(command, { shell });
             return { stdout, stderr };
         } catch (error) {
             console.error('Execution failed:', error);
