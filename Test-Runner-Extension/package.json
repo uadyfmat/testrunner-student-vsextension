@@ -24,12 +24,19 @@
       {
         "command": "test-runner-extension.runTest",
         "title": "Run Test-Runner"
+      },
+      {
+        "command": "test-runner-extension.doctor",
+        "title": "Run doctor"
       }
     ],
     "menus": {
       "explorer/context": [
         {
           "command": "test-runner-extension.installTestRunner"
+        },
+        {
+          "command": "test-runner-extension.doctor"
         }
       ]
     },
@@ -187,12 +194,15 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.88.0",
     "@types/mocha": "^10.0.6",
     "@types/node": "18.x",
-    "eslint": "^8.56.0",
-    "typescript": "^5.3.3",
+    "@types/vscode": "^1.88.0",
     "@vscode/test-cli": "^0.0.6",
-    "@vscode/test-electron": "^2.3.9"
+    "@vscode/test-electron": "^2.3.9",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "vscode": "^1.1.37"
   }
 }
