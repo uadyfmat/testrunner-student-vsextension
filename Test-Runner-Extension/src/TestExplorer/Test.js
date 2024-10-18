@@ -25,7 +25,8 @@ class Test {
         let normalizedPath;
         
         if (osName === 'Windows') {
-            normalizedPath = relativePath.replace(/\\/g, '/').replace(':', '');
+            // window bash command path must start with / in order to be understood as a full path in bash
+            normalizedPath = '/' + relativePath.replace(/\\/g, '/').replace(':', '');
         } else {
             // For Unix-based systems (macOS/Linux), use POSIX paths
             normalizedPath = path.posix.normalize(relativePath);
