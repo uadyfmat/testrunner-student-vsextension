@@ -89,7 +89,7 @@ class Test {
         }
     
         if (stdout) this.vscodeTestRun.appendOutput(this.cleanOutput(stdout));
-        if (stderr) this.vscodeTestRun.appendOutput(this.cleanOutput(stdout));
+        if (stderr) this.vscodeTestRun.appendOutput(this.cleanOutput(stderr));
     
         this.vscodeTestRun.end();
     }
