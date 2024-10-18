@@ -22,18 +22,16 @@ class Test {
 
     normalizeCommand(relativePath) {
         const osName = detectOperatingSystem();
-    
-        let command = `test-runner ${relativePath}`;
+        let normalizedPath;
         
         if (osName === 'Windows') {
-            // Normalize Windows paths using forward slashes for Git Bash compatibility
-            let normalizedCommand = command.replace(/\\/g, '/');
-            normalizedCommand = normalizedCommand.replace(':', ''); // Removes drive letter colon (C:)
-            return normalizedCommand;
+            normalizedPath = relativePath.replace(/\\/g, '/').replace(':', '');
         } else {
             // For Unix-based systems (macOS/Linux), use POSIX paths
-            return path.posix.normalize(command);  // Ensures paths are correctly formatted for Unix
+            normalizedPath = path.posix.normalize(relativePath);
         }
+    
+        return `test-runner ${normalizedPath}`;
     }
 
     getShellForOS() {
