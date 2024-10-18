@@ -67,21 +67,26 @@ const runTestRunner = async () => {
 }
 
 // Función para verificar si Node.js y npm están instalados
-function checkNodeAndNpmInstalled() {
+function checkNodeInstalled() {
     exec('node -v', (error, stdout, stderr) => {
         if (error) {
             vscode.window.showErrorMessage('Node.js no está instalado o no está en el PATH.');
-            return;
+            return false;
         } else {
             vscode.window.showInformationMessage(`Node.js está instalado. Versión: ${stdout}`);
+            return true
         }
     });
+}
 
+function checkNPMIstalled(){
     exec('npm -v', (error, stdout, stderr) => {
         if (error) {
             vscode.window.showErrorMessage('npm no está instalado o no está en el PATH.');
+            return false
         } else {
             vscode.window.showInformationMessage(`npm está instalado. Versión: ${stdout}`);
+            return true
         }
     });
 }
@@ -94,6 +99,7 @@ function checkGitBashInstalled() {
         // Verificamos si git-bash.exe existe
         execFile(gitBashPath, ['--version'], (error, stdout, stderr) => {
             if (error) {
+                //Puede que si este instalado pero no esta en el path por lo que el true esta hasta que se verifica el git, no el git bash
                 vscode.window.showErrorMessage('Git Bash no está instalado o no está en el PATH.');
             } else {
                 vscode.window.showInformationMessage(`Git Bash está instalado: ${stdout}`);
@@ -104,8 +110,10 @@ function checkGitBashInstalled() {
     exec('git --version', (error, stdout, stderr) => {
         if (error) {
             vscode.window.showErrorMessage('Git no está instalado o no está en el PATH.');
+            return false
         } else {
             vscode.window.showInformationMessage(`Git está instalado. Versión: ${stdout}`);
+            return true
         }
     });
 }
@@ -116,6 +124,7 @@ module.exports =
     findSpecFiles,
     installExtension,
     runTestRunner,
-    checkNodeAndNpmInstalled,
+    checkNodeInstalled,
+    checkNPMIstalled,
     checkGitBashInstalled
 };
