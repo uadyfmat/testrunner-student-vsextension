@@ -26,6 +26,12 @@
         "title": "Run Test-Runner"
       },
       {
+        "command": "test-runner-extension.checkNodeNpm",
+        "title": "Verify npm and node"
+      },
+      {
+        "command": "test-runner-extension.checkGitBash",
+        "title": "Verify Git Bash"
         "command": "test-runner-extension.doctor",
         "title": "Run doctor"
       }
