@@ -3,7 +3,8 @@ const path = require('path');
 const vscode = require('vscode');
 const { exec, execFile } = require('child_process');
 const os = require('os');
-
+const detectOperatingSystem = require("./OSUtils.js");
+const DependencyChecker = require('./CheckDependenses.js');
 
 function findSpecFiles(directory) {
     let specFiles = [];
@@ -66,6 +67,7 @@ const runTestRunner = async () => {
     }
 }
 
+
 // Función para verificar si Node.js y npm están instalados
 function checkNodeInstalled() {
     exec('node -v', (error, stdout, stderr) => {
@@ -120,6 +122,41 @@ function checkGitBashInstalled() {
 
 
 module.exports = 
+
+
+const doctor = async (  ) => {
+    const userOS = detectOperatingSystem();
+    
+    // el checar la instalación de node es global así que no es necesario definir el sistema operativo aquí. 
+    const isNodeInstaled = DependencyChecker.checkNodeInstallation();
+    console.log("Sistema operativo: ", userOS);
+    switch (userOS) {
+        case "Windows":
+            // windows necesita git, node, npm y test runner
+            DependencyChecker.checkNPMInstallation();
+            DependencyChecker.checkGitInstallation();
+            DependencyChecker.checkTestRunnerInstallation();
+            
+            break;
+
+        case "Linux": 
+            // Linux solo necesita revisar node y npm
+            DependencyChecker.checkNPMInstallation();
+            break;
+        
+        case "Mac": 
+            // Mac solo necesita el bash, node y npm
+            DependencyChecker.checkNPMInstallation();
+            DependencyChecker.checkBashnstallation();
+
+            break;
+    
+        default:
+            break;
+    }
+}
+
+module.exports =
 {
     findSpecFiles,
     installExtension,
@@ -127,4 +164,5 @@ module.exports =
     checkNodeInstalled,
     checkNPMIstalled,
     checkGitBashInstalled
+    doctor
 };
