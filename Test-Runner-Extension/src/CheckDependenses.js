@@ -26,7 +26,6 @@ const checkNPMInstallation = () => {
             resolve(true);
         })
     })
-
 };
 
 const checkGitInstallation = () => {
@@ -72,5 +71,6 @@ module.exports = {
     checkGitInstallation,
     checkTestRunnerInstallation,
     checkBashnInstallation,
-    checkHomeBrewInstallation
+    checkHomeBrewInstallation,
+    checkBashnstallation
 }

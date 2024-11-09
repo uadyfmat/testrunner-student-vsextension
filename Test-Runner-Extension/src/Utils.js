@@ -1,10 +1,13 @@
 const fs = require('fs');
 const path = require('path');
 const vscode = require('vscode');
+
 const { exec } = require('child_process');
 const detectOperatingSystem = require("./OSUtils.js");
 const DependencyChecker = require('./CheckDependenses.js');
 const InstallDependencies = require('./InstallDependencies.js');
+const DependencyChecker = require('./CheckDependenses.js');
+
 
 function findSpecFiles(directory) {
     let specFiles = [];
@@ -68,19 +71,20 @@ const runTestRunner = async () => {
 }
 
 
+
 const doctor = async () => {
     const userOS = detectOperatingSystem();
 
     // el checar la instalación de node es global así que no es necesario definir el sistema operativo aquí. 
     const isNodeInstaled = await DependencyChecker.checkNodeInstallation();
     console.log("Sistema operativo: ", userOS);
+  
     switch (userOS) {
         case "Windows":
             // windows necesita git, node, npm y test runner
             DependencyChecker.checkNPMInstallation();
             DependencyChecker.checkGitInstallation();
             DependencyChecker.checkTestRunnerInstallation();
-
             break;
 
         case "Linux":

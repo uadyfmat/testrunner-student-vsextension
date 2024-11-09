@@ -28,6 +28,13 @@ function activate(context) {
     context.subscriptions.push(runTest);
     context.subscriptions.push(installNodeNpm);
 
+    // función para saber que dependencias faltan por instalar
+    let doctor = vscode.commands.registerCommand('test-runner-extension.doctor', utils.doctor)
+
+    // Agrega ambas funciones a las suscripciones del contexto
+    context.subscriptions.push(installTestRunner);
+    context.subscriptions.push(runTest);
+    context.subscriptions.push(doctor);
 }
 
 function deactivate() { }
